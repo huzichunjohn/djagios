@@ -16,9 +16,12 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
-from data_collector.views import StatusView
+from data_collector.views import StatusView, AlertListView, NewAlertView, EditAlertView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', StatusView.as_view(), name='status'),
+    url(r'^alerts/$', AlertListView.as_view(), name='alerts-list'),
+    url(r'^alerts/new/$', NewAlertView.as_view(), name='alerts-new'),
+    url(r'^alerts/(?P<pk>\d+)/edit/$', EditAlertView.as_view(), name='alerts-edit'),
 ]

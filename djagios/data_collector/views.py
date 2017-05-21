@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView, CreateView, UpdateView
+from django.core.urlresolvers import reverse
 
-from data_collector.models import DataPoint
+from data_collector.models import DataPoint, Alert
 
 class StatusView(TemplateView):
     template_name = 'status.html'
@@ -25,3 +26,27 @@ class StatusView(TemplateView):
 
         ctx['status_data_dict'] = status_data_dict
         return ctx
+
+class AlertListView(ListView):
+    template_name = 'alerts_list.html'
+    model = Alert
+
+class NewAlertView(CreateView):
+    template_name = 'create_or_update_alert.html'
+    model = Alert
+    fields = [
+        'data_type', 'min_value', 'max_value', 'node_name', 'is_active'
+    ]
+
+    def get_success_url(self):
+        return reverse('alerts-list')
+
+class EditAlertView(UpdateView):
+    template_name = 'create_or_update_alert.html'
+    model = Alert
+    fields = [
+        'data_type', 'min_value', 'max_value', 'node_name', 'is_active'
+    ]
+
+    def get_success_url(self):
+        return reverse('alerts-list')
